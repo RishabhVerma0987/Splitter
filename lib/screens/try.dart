@@ -3,9 +3,10 @@ import 'package:flutter/painting.dart';
 import '../components/backgroung.dart';
 import 'package:provider/provider.dart';
 import '../state/credentials.dart';
-import '../components/forum.dart';
+import '../components/signInSignOutPieces.dart/forum.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import '../components/signInSignOutPieces.dart/frontImage.dart';
 
 class SignIn extends StatefulWidget {
   _SignInState createState() => _SignInState();
@@ -58,41 +59,33 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
               children: <Widget>[
                 BackgroundPaper(
                     height: height, width: width, animation: animation),
-                ImagePanel(),
+                Positioned(
+                  top: -150,
+                  right: -120,
+                  child: Container(
+                    height: height / 2,
+                    width: height / 2,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.blueGrey),
+                  ),
+                ),
+                Positioned(
+                  top: 150,
+                  right: -30,
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.black54),
+                  ),
+                ),
+                ImagePanel(
+                  imageLoction: 'images/animat-road-trip-color.gif',
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Visibility(
-                        visible: error,
-                        child: Container(
-                          width: 300,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              new BoxShadow(
-                                color: Colors.black26,
-                                offset: new Offset(5.0, 5.0),
-                                blurRadius: 7.0,
-                              )
-                            ],
-                          ),
-                          child: Center(
-                              child: Shimmer.fromColors(
-                            baseColor: Colors.white,
-                            highlightColor: Colors.black,
-                            child: Text(
-                              'Email or password is invalid',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
-                            ),
-                          )),
-                        ),
-                      ),
-                    ),
+                    EmailErrorBox(error: error),
                     //login
                     Padding(
                       padding: const EdgeInsets.fromLTRB(25, 0, 100, 0),
@@ -113,115 +106,149 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
-                Positioned(
-                  left: 30,
-                  bottom: 110,
-                  right: 15,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Sign In',
-                        style: TextStyle(
-                            fontSize: 60,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF4C515A)),
-                      ),
-                      AvatarGlow(
-                        startDelay: Duration(milliseconds: 1000),
-                        glowColor: Colors.blueGrey,
-                        endRadius: 70.0,
-                        duration: Duration(milliseconds: 2000),
-                        repeat: true,
-                        showTwoGlows: true,
-                        repeatPauseDuration: Duration(milliseconds: 100),
-                        child: Container(
-                            width: 80.0,
-                            height: 80.0,
-                            child: RawMaterialButton(
-                              shape: CircleBorder(),
-                              elevation: 10,
-                              onPressed: () {},
-                              fillColor: Colors.black54,
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white54,
-                              ),
-                            )),
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  bottom: 40,
-                  left: 25,
-                  right: 25,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        width: 70,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.blueGrey,
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            new BoxShadow(
-                              color: Colors.black26,
-                              offset: new Offset(5.0, 5.0),
-                              blurRadius: 7.0,
-                            )
-                          ],
-                        ),
-                        child: Center(
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.white60,
-                            highlightColor: Colors.white,
-                            child: Text('Sign Up?',
-                                style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                )),
-                          ),
-                        ),
-                      ),
-                      Text('forget password ?',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontStyle: FontStyle.italic,
-                              decoration: TextDecoration.underline)),
-                    ],
-                  ),
-                )
+                signInRow(credentials),
+                SignUpFootnotes(),
               ],
             ));
       },
     );
   }
-}
 
-// RaisedButton(
-//                       child: Text("Login"),
-//                       onPressed: () {
-//                         setState(() {
-//                           error = credentials.getError();
-//                         });
-//                       },
-//                     )
-
-class ImagePanel extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    AssetImage assetImage = AssetImage('images/animat-road-trip-color.gif');
-    Image image = Image(
-      image: assetImage,
-    );
+  Positioned signInRow(Credentials credentials) {
+    final double bottomPadding = 110;
+    final String text = 'Sign In';
+    final Color textColor = Color(0xFF4C515A);
+    final Color circleButtonGlowColor = Colors.blueGrey;
+    final Color cirlcleButtonColor = Colors.black54;
 
     return Positioned(
-      top: 40,
-      child: Container(
-        child: image,
-        width: 200,
-        height: 200,
+      left: 30,
+      bottom: bottomPadding,
+      right: 15,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(text,
+              style: TextStyle(
+                fontSize: 60,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              )),
+          AvatarGlow(
+            startDelay: Duration(milliseconds: 1000),
+            glowColor: circleButtonGlowColor,
+            endRadius: 70.0,
+            duration: Duration(milliseconds: 2000),
+            repeat: true,
+            showTwoGlows: true,
+            repeatPauseDuration: Duration(milliseconds: 100),
+            child: Container(
+                width: 80.0,
+                height: 80.0,
+                child: RawMaterialButton(
+                  shape: CircleBorder(),
+                  elevation: 10,
+                  onPressed: () {
+                    setState(() {
+                      error = credentials.getError();
+                    });
+                  },
+                  fillColor: cirlcleButtonColor,
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white54,
+                  ),
+                )),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SignUpFootnotes extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 40,
+      left: 25,
+      right: 25,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            width: 70,
+            height: 30,
+            decoration: BoxDecoration(
+              color: Colors.blueGrey,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                new BoxShadow(
+                  color: Colors.black26,
+                  offset: new Offset(5.0, 5.0),
+                  blurRadius: 7.0,
+                )
+              ],
+            ),
+            child: Center(
+              child: Shimmer.fromColors(
+                baseColor: Colors.white60,
+                highlightColor: Colors.white,
+                child: Text('Sign Up?',
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                    )),
+              ),
+            ),
+          ),
+          Text('forget password ?',
+              style: TextStyle(
+                  fontSize: 15,
+                  fontStyle: FontStyle.italic,
+                  decoration: TextDecoration.underline)),
+        ],
+      ),
+    );
+  }
+}
+
+class EmailErrorBox extends StatelessWidget {
+  EmailErrorBox({
+    @required this.error,
+  });
+
+  final bool error;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Visibility(
+        visible: error,
+        child: Container(
+          width: 300,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.redAccent,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              new BoxShadow(
+                color: Colors.black26,
+                offset: new Offset(5.0, 5.0),
+                blurRadius: 7.0,
+              )
+            ],
+          ),
+          child: Center(
+              child: Shimmer.fromColors(
+            baseColor: Colors.white,
+            highlightColor: Colors.black,
+            child: Text(
+              'Email or password is invalid',
+              style: TextStyle(color: Colors.white, fontSize: 17),
+            ),
+          )),
+        ),
       ),
     );
   }

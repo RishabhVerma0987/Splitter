@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../state/credentials.dart';
+import '../../state/credentials.dart';
 
 class Forum extends StatelessWidget {
   final String hintText;
