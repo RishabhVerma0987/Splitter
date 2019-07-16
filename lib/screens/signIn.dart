@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import '../components/backgroung.dart';
+import 'package:provider/provider.dart';
+import '../state/credentials.dart';
+import '../components/signInSignOutPieces.dart/forum.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:avatar_glow/avatar_glow.dart';
+import '../components/signInSignOutPieces.dart/frontImage.dart';
 
 class SignIn extends StatefulWidget {
   _SignInState createState() => _SignInState();
@@ -9,14 +15,12 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> with TickerProviderStateMixin {
   AnimationController controller;
   Animation animation;
-
   bool error = false;
-  String email;
-  String password;
 
   void initState() {
     super.initState();
     backAni();
+    print("from try");
   }
 
   void backAni() {
@@ -37,7 +41,8 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    print(error);
+    final credentials = Provider.of<Credentials>(context);
+
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final height = constraints.maxHeight;
@@ -50,100 +55,187 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
             },
             child: Stack(
               alignment: Alignment.center,
+              overflow: Overflow.visible,
               children: <Widget>[
                 BackgroundPaper(
                     height: height, width: width, animation: animation),
+                ImagePanel(
+                  imageLoction: 'images/animat-road-trip-color.gif',
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    EmailErrorBox(error: error),
+                    //login
                     Padding(
                       padding: const EdgeInsets.fromLTRB(25, 0, 100, 0),
-                      child: Material(
-                        color: Color(0xFFF8FBFA),
-                        elevation: 9,
-                        shape: StadiumBorder(),
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(15, 2, 0, 2),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'login',
-                                  hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontStyle: FontStyle.italic)),
-                              keyboardType: TextInputType.emailAddress,
-                              onChanged: (input) {
-                                setState(() {
-                                  email = input;
-                                });
-                              },
-                            )),
+                      child: Forum(
+                        credentials: credentials,
+                        hintText: 'login',
+                        obscureText: false,
+                      ),
+                    ),
+                    //password
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 25, 100, 0),
+                      child: Forum(
+                        credentials: credentials,
+                        hintText: 'password',
+                        obscureText: true,
                       ),
                     ),
                   ],
                 ),
+                signInRow(credentials),
+                SignUpFootnotes(),
               ],
             ));
       },
     );
   }
 
-  //FIXME: FIND A DIFFERENT WAY TO STORE THIS IN ANOTHER FILE
-  void checkEmail() {
-    if (validateEmail(email) != null) {
-      setState(() {
-        email = '';
-        error = true;
-      });
-      print('error');
-    } else {
-      print('not error');
-      setState(() {
-        error = false;
-      });
-    }
-  }
+  Positioned signInRow(Credentials credentials) {
+    final double bottomPadding = 110;
+    final String text = 'Sign In';
+    final Color textColor = Color(0xFF4C515A);
+    final Color circleButtonGlowColor = Colors.blueGrey;
+    final Color cirlcleButtonColor = Colors.black54;
 
-  //FIXME: different folder
-  String validateEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'enter valid email';
-    else
-      return null;
+    return Positioned(
+      left: 30,
+      bottom: bottomPadding,
+      right: 15,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(text,
+              style: TextStyle(
+                fontSize: 60,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              )),
+          AvatarGlow(
+            startDelay: Duration(milliseconds: 1000),
+            glowColor: circleButtonGlowColor,
+            endRadius: 70.0,
+            duration: Duration(milliseconds: 2000),
+            repeat: true,
+            showTwoGlows: true,
+            repeatPauseDuration: Duration(milliseconds: 100),
+            child: Container(
+                width: 80.0,
+                height: 80.0,
+                child: RawMaterialButton(
+                  shape: CircleBorder(),
+                  elevation: 10,
+                  onPressed: () {
+                    setState(() {
+                      error = credentials.getError();
+                    });
+                  },
+                  fillColor: cirlcleButtonColor,
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white54,
+                  ),
+                )),
+          ),
+        ],
+      ),
+    );
   }
 }
 
-// Material(
-//                       color: Colors.white,
-//                       elevation: 3,
-//                       shape: StadiumBorder(),
-//                       child: Padding(
-//                           padding: const EdgeInsets.only(left: 8.0),
-//                           child: TextField(
-//                             decoration: InputDecoration(
-//                                 border: InputBorder.none, hintText: 'Password'),
-//                             onChanged: (input) {
-//                               setState(() {
-//                                 password = input;
-//                               });
-//                             },
-//                             obscureText: true,
-//                           )),
-//                     ),
+class SignUpFootnotes extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 40,
+      left: 25,
+      right: 25,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            width: 70,
+            height: 30,
+            decoration: BoxDecoration(
+              color: Colors.blueGrey,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                new BoxShadow(
+                  color: Colors.black26,
+                  offset: new Offset(5.0, 5.0),
+                  blurRadius: 7.0,
+                )
+              ],
+            ),
+            child: Center(
+              child: Shimmer.fromColors(
+                baseColor: Colors.white60,
+                highlightColor: Colors.white,
+                child: Text('Sign Up?',
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                    )),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 160),
+            child: ImagePanelTwo(
+              imageLoction: 'images/animat-rocket-color.gif',
+            ),
+          ),
+          Text('forget password ?',
+              style: TextStyle(
+                  fontSize: 15,
+                  fontStyle: FontStyle.italic,
+                  decoration: TextDecoration.underline)),
+        ],
+      ),
+    );
+  }
+}
 
-// RaisedButton(
-//                       child: Text("Login"),
-//                       onPressed: () {
-//                         checkEmail();
-//                       },
-//                     )
+class EmailErrorBox extends StatelessWidget {
+  EmailErrorBox({
+    @required this.error,
+  });
 
-// Visibility(
-//                       visible: error,
-//                       child: Container(
-//                         child: Text('Email invalid'),
-//                       ),
-//                     ),
+  final bool error;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Visibility(
+        visible: error,
+        child: Container(
+          width: 300,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.redAccent,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              new BoxShadow(
+                color: Colors.black26,
+                offset: new Offset(5.0, 5.0),
+                blurRadius: 7.0,
+              )
+            ],
+          ),
+          child: Center(
+              child: Shimmer.fromColors(
+            baseColor: Colors.white,
+            highlightColor: Colors.black,
+            child: Text(
+              'Email or password is invalid',
+              style: TextStyle(color: Colors.white, fontSize: 17),
+            ),
+          )),
+        ),
+      ),
+    );
+  }
+}

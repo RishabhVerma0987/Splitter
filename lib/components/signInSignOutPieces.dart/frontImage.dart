@@ -20,3 +20,21 @@ class ImagePanel extends StatelessWidget {
     );
   }
 }
+
+class ImagePanelTwo extends StatelessWidget {
+  final String imageLoction;
+  ImagePanelTwo({@required this.imageLoction});
+  @override
+  Widget build(BuildContext context) {
+    AssetImage assetImage = AssetImage(imageLoction);
+    Image image = Image(
+      image: assetImage,
+    );
+
+    return Container(
+      child: image,
+      width: 30,
+      height: 30,
+    );
+  }
+}

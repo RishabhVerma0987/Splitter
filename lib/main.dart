@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-//import 'screens/signIn.dart';
+import 'screens/signIn.dart';
 import 'state/credentials.dart';
 import 'package:provider/provider.dart';
-import 'screens/try.dart';
+//import 'screens/try.dart';
 
 void main() => runApp(MyApp());
 
