@@ -24,7 +24,10 @@ class Forum extends StatelessWidget {
                 border: InputBorder.none,
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    fontWeight: FontWeight.w300, fontStyle: FontStyle.italic)),
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.italic,
+                  fontFamily: 'Raleway Medium',
+                )),
             keyboardType: TextInputType.emailAddress,
             obscureText: obscureText,
             onChanged: (input) {

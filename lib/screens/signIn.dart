@@ -110,6 +110,7 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
         children: <Widget>[
           Text(text,
               style: TextStyle(
+                fontFamily: 'Raleway Medium',
                 fontSize: 60,
                 fontWeight: FontWeight.bold,
                 color: textColor,
@@ -136,7 +137,7 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
                   fillColor: cirlcleButtonColor,
                   child: Icon(
                     Icons.arrow_forward_ios,
-                    color: Colors.white54,
+                    color: Colors.white60,
                   ),
                 )),
           ),
@@ -176,8 +177,8 @@ class SignUpFootnotes extends StatelessWidget {
                 highlightColor: Colors.white,
                 child: Text('Sign Up?',
                     style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                    )),
+                        fontStyle: FontStyle.italic,
+                        fontFamily: 'NanumGothicCoding Regular')),
               ),
             ),
           ),
@@ -189,7 +190,8 @@ class SignUpFootnotes extends StatelessWidget {
           ),
           Text('forget password ?',
               style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 13,
+                  fontFamily: 'NanumGothicCoding Regular',
                   fontStyle: FontStyle.italic,
                   decoration: TextDecoration.underline)),
         ],
