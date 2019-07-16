@@ -30,7 +30,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       //TODO: define routers , do navigation
-      child: SignOut(),
+      child: SignIn(),
     );
   }
 }

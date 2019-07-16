@@ -3,32 +3,93 @@ import 'package:flutter/material.dart';
 class Credentials with ChangeNotifier {
   String email;
   String password;
-  bool error;
+  String confirmPassword;
 
-  Credentials({this.email = '', this.password = '', this.error = false});
+  String emailErrorText;
+  String passwordErrorText;
+  String emailPasswordMatchErrorText;
+
+  bool emailErrorColor = false;
+  bool passwordErrorColor = false;
+  bool matchErrorColor = false;
+
+  Credentials({this.email = '', this.password = '', this.confirmPassword});
 
   getEmail() => email;
   getPassword() => password;
-  getError() => error;
+
+  getEmailErrorText() => emailErrorText;
+  getPasswordErrorText() => passwordErrorText;
+  getEmailPasswordMatchErrorText() => emailPasswordMatchErrorText;
+
+  getEmailErrorColor() {
+    if (emailErrorColor) {
+      // return red
+      return 0xFFdebdbd;
+    } else {
+      // return green
+      return 0xFFfaf7f7;
+    }
+  }
+
+  getPasswordErrorColor() {
+    if (passwordErrorColor) {
+      // return red
+      return 0xFFdebdbd;
+    } else {
+      // return green
+      return 0xFFfaf7f7;
+    }
+  }
+
+  getMatchErrorColor() {
+    if (matchErrorColor) {
+      // return red
+      return 0xFFdebdbd;
+    } else {
+      // return green
+      return 0xFFfaf7f7;
+    }
+  }
 
   void checkEmail(String enteredEmail) {
-    if (validateEmail(enteredEmail) != null) {
+    String arg = validateEmail(enteredEmail);
+    if (arg != null) {
       email = '';
-      error = true;
+
+      emailErrorText = arg;
+      emailErrorColor = true;
     } else {
       email = enteredEmail;
-      error = false;
+
+      emailErrorColor = false;
     }
     notifyListeners();
   }
 
   void checkPassword(String enteredPassword) {
-    if (validatePassword(enteredPassword) != null) {
+    String arg = validatePassword(enteredPassword);
+    if (arg != null) {
       password = '';
-      error = true;
+
+      passwordErrorText = arg;
+      passwordErrorColor = true;
     } else {
       password = enteredPassword;
-      error = false;
+
+      passwordErrorColor = false;
+    }
+    notifyListeners();
+  }
+
+  void checkPasswordMatch(String pass) {
+    String arg = 'Password does not match';
+    confirmPassword = pass;
+    if (confirmPassword == password) {
+      matchErrorColor = false;
+    } else {
+      emailPasswordMatchErrorText = arg;
+      matchErrorColor = true;
     }
     notifyListeners();
   }

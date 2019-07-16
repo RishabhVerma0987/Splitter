@@ -5,16 +5,21 @@ class Forum extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final Credentials credentials;
-  Forum({
-    @required this.hintText,
-    this.obscureText,
-    @required this.credentials,
-  });
+  final int color;
+  final int id;
+  Forum(
+      {@required this.hintText,
+      this.obscureText,
+      @required this.credentials,
+      this.id = 0,
+      this.color});
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Color(0xFFF8FBFA),
+      color: Color(color),
+      //color: Color(0xFFbddec4),
+      //color: Color(0xFFdebdbd),
       elevation: 9,
       shape: StadiumBorder(),
       child: Padding(
@@ -32,11 +37,16 @@ class Forum extends StatelessWidget {
             obscureText: obscureText,
             onChanged: (input) {
               // In login, we will not consider the validity of password
-
-              if (obscureText) {
-                credentials.password = input;
+              if (id != 1) {
+                if (obscureText) {
+                  //credentials.password = input;
+                  credentials.checkPassword(input);
+                } else {
+                  credentials.checkEmail(input);
+                }
               } else {
-                credentials.checkEmail(input);
+                //credentials.confirmPassword = input;
+                credentials.checkPasswordMatch(input);
               }
             },
           )),

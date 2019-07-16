@@ -75,6 +75,7 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
                         credentials: credentials,
                         hintText: 'login',
                         obscureText: false,
+                        color: credentials.getEmailErrorColor(),
                       ),
                     ),
                     //password
@@ -84,6 +85,7 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
                         credentials: credentials,
                         hintText: 'password',
                         obscureText: true,
+                        color: credentials.getPasswordErrorColor(),
                       ),
                     ),
                   ],
@@ -133,7 +135,7 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
                   elevation: 10,
                   onPressed: () {
                     setState(() {
-                      error = credentials.getError();
+                      finalCheck(credentials);
                     });
                   },
                   fillColor: cirlcleButtonColor,
@@ -146,6 +148,14 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  void finalCheck(Credentials credentials) {
+    if (credentials.emailErrorColor || credentials.passwordErrorColor) {
+      error = true;
+    } else {
+      error = false;
+    }
   }
 }
 

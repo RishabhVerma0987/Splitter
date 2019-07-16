@@ -8,6 +8,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import '../components/signInSignOutPieces.dart/frontImage.dart';
 
+String errorText;
+
 class SignOut extends StatefulWidget {
   _SignOutState createState() => _SignOutState();
 }
@@ -60,7 +62,7 @@ class _SignOutState extends State<SignOut> with TickerProviderStateMixin {
                 BackgroundPaper(
                     height: height, width: width, animation: animation),
                 ImagePanel(
-                  imageLoction: 'images/animat-roket-color.gif',
+                  imageLoction: 'images/animat-rocket-color.gif',
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -73,6 +75,7 @@ class _SignOutState extends State<SignOut> with TickerProviderStateMixin {
                         credentials: credentials,
                         hintText: 'your Email',
                         obscureText: false,
+                        color: credentials.getEmailErrorColor(),
                       ),
                     ),
                     //password
@@ -82,6 +85,7 @@ class _SignOutState extends State<SignOut> with TickerProviderStateMixin {
                         credentials: credentials,
                         hintText: 'password',
                         obscureText: true,
+                        color: credentials.getPasswordErrorColor(),
                       ),
                     ),
                     Padding(
@@ -90,6 +94,8 @@ class _SignOutState extends State<SignOut> with TickerProviderStateMixin {
                         credentials: credentials,
                         hintText: 'Confirm password',
                         obscureText: true,
+                        id: 1,
+                        color: credentials.getMatchErrorColor(),
                       ),
                     ),
                   ],
@@ -100,6 +106,14 @@ class _SignOutState extends State<SignOut> with TickerProviderStateMixin {
             ));
       },
     );
+  }
+
+  int emailForumColor(bool errorColor) {
+    if (errorColor == true) {
+      return 0xFFdebdbd;
+    } else {
+      return 0xFFbddec4;
+    }
   }
 
   Positioned signInRow(Credentials credentials) {
@@ -139,7 +153,9 @@ class _SignOutState extends State<SignOut> with TickerProviderStateMixin {
                   elevation: 10,
                   onPressed: () {
                     setState(() {
-                      error = credentials.getError();
+                      //credentials.checkPasswordMatch();
+                      //error = credentials.getError();
+                      finalCheck(credentials);
                     });
                   },
                   fillColor: cirlcleButtonColor,
@@ -152,6 +168,16 @@ class _SignOutState extends State<SignOut> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  void finalCheck(Credentials credentials) {
+    if (credentials.emailErrorColor ||
+        credentials.passwordErrorColor ||
+        credentials.matchErrorColor) {
+      error = true;
+    } else {
+      error = false;
+    }
   }
 }
 
@@ -191,7 +217,7 @@ class SignUpFootnotes extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 160),
+            padding: const EdgeInsets.only(right: 250),
             child: ImagePanelTwo(
               imageLoction: 'images/animat-road-trip-color.gif',
             ),
@@ -234,7 +260,7 @@ class EmailErrorBox extends StatelessWidget {
             baseColor: Colors.white,
             highlightColor: Colors.black,
             child: Text(
-              'Email or password is invalid',
+              'credentials wrong',
               style: TextStyle(color: Colors.white, fontSize: 17),
             ),
           )),
