@@ -3,6 +3,7 @@ import 'screens/signIn.dart';
 import 'state/credentials.dart';
 import 'package:provider/provider.dart';
 //import 'screens/try.dart';
+import 'screens/signOut..dart';
 
 void main() => runApp(MyApp());
 
@@ -29,7 +30,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       //TODO: define routers , do navigation
-      child: SignIn(),
+      child: SignOut(),
     );
   }
 }

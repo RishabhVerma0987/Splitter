@@ -15,11 +15,13 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> with TickerProviderStateMixin {
   AnimationController controller;
   Animation animation;
+
   bool error = false;
 
   void initState() {
     super.initState();
     backAni();
+
     print("from try");
   }
 
