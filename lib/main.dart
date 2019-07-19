@@ -4,6 +4,7 @@ import 'state/credentials.dart';
 import 'package:provider/provider.dart';
 //import 'screens/try.dart';
 import 'screens/signOut..dart';
+import 'screens/mL.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,6 +29,6 @@ class MyApp extends StatelessWidget {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SignOut();
+    return TextRecognizer();
   }
 }
