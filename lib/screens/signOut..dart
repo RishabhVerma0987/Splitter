@@ -57,6 +57,7 @@ class _SignOutState extends State<SignOut> with TickerProviderStateMixin {
             },
             child: Stack(
               alignment: Alignment.center,
+              fit: StackFit.loose,
               overflow: Overflow.visible,
               children: <Widget>[
                 BackgroundPaper(

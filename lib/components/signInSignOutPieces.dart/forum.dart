@@ -35,6 +35,7 @@ class Forum extends StatelessWidget {
                 )),
             keyboardType: TextInputType.emailAddress,
             obscureText: obscureText,
+            autofocus: true,
             onChanged: (input) {
               // In login, we will not consider the validity of password
               if (id != 1) {

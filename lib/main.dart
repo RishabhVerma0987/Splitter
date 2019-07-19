@@ -28,9 +28,6 @@ class MyApp extends StatelessWidget {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //TODO: define routers , do navigation
-      child: SignIn(),
-    );
+    return SignOut();
   }
 }
