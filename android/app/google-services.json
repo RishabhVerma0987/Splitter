@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1048923541645",
+    "firebase_url": "https://textrecognitionofbill.firebaseio.com",
+    "project_id": "textrecognitionofbill",
+    "storage_bucket": "textrecognitionofbill.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048923541645:android:fbd67ac3ccdc111e",
+        "android_client_info": {
+          "package_name": "com.example.custom_clipper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048923541645-8tbrt23nrmpeu1t09s7ij7tao23mk0i2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDqyGv4rgB_WajD8kMQ72GpCbpQU3ZOPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048923541645-8tbrt23nrmpeu1t09s7ij7tao23mk0i2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
