@@ -1,3 +1,4 @@
+import 'package:custom_clipper/screens/signOut..dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import '../components/backgroung.dart';
@@ -6,9 +7,10 @@ import '../state/credentials.dart';
 import '../components/signInSignOutPieces.dart/forum.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-import '../components/signInSignOutPieces.dart/frontImage.dart';
+import '../components/signInSignOutPieces.dart/displayImage.dart';
 
 class SignIn extends StatefulWidget {
+  static String screenId = 'SignIn_screen';
   _SignInState createState() => _SignInState();
 }
 
@@ -61,8 +63,17 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
               children: <Widget>[
                 BackgroundPaper(
                     height: height, width: width, animation: animation),
-                ImagePanel(
-                  imageLoction: 'images/animat-road-trip-color.gif',
+                //ImagePanel(
+                //  imageLoction: 'images/animat-road-trip-color.gif',
+                //),
+                Positioned(
+                  top: 40,
+                  child: Container(
+                    child: MainImage(
+                        imageLocation: 'images/animat-road-trip-color.gif'),
+                    width: 200,
+                    height: 200,
+                  ),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -187,18 +198,44 @@ class SignUpFootnotes extends StatelessWidget {
               child: Shimmer.fromColors(
                 baseColor: Colors.white60,
                 highlightColor: Colors.white,
-                child: Text('Sign Up?',
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontFamily: 'NanumGothicCoding Regular')),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => SignOut()));
+                  },
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => SignOut()));
+                    },
+                    child: Text('Sign Up?',
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontFamily: 'NanumGothicCoding Regular')),
+                  ),
+                ),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 160),
-            child: ImagePanelTwo(
-              imageLoction: 'images/animat-rocket-color.gif',
+            child: Hero(
+              tag: 'animate',
+              child: Container(
+                child: MainImage(
+                  imageLocation: 'images/animat-rocket-color.gif',
+                ),
+                width: 30,
+                height: 30,
+              ),
             ),
+            // ImagePanelTwo(
+            //   imageLoction: 'images/animat-rocket-color.gif',
+            // ),
           ),
           Text('forget password ?',
               style: TextStyle(

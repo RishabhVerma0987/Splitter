@@ -6,11 +6,12 @@ import '../state/credentials.dart';
 import '../components/signInSignOutPieces.dart/forum.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-import '../components/signInSignOutPieces.dart/frontImage.dart';
+import '../components/signInSignOutPieces.dart/displayImage.dart';
 
 String errorText;
 
 class SignOut extends StatefulWidget {
+  static String screenId = 'SignUp_screen';
   _SignOutState createState() => _SignOutState();
 }
 
@@ -45,66 +46,81 @@ class _SignOutState extends State<SignOut> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final credentials = Provider.of<Credentials>(context);
 
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        final height = constraints.maxHeight;
-        final width = constraints.maxWidth;
-        return GestureDetector(
-            onTap: () {
-              setState(() {
-                backAni();
-              });
-            },
-            child: Stack(
-              alignment: Alignment.center,
-              overflow: Overflow.visible,
-              children: <Widget>[
-                BackgroundPaper(
-                    height: height, width: width, animation: animation),
-                ImagePanel(
-                  imageLoction: 'images/animat-rocket-color.gif',
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    EmailErrorBox(error: error),
-                    //login
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(25, 0, 100, 0),
-                      child: Forum(
-                        credentials: credentials,
-                        hintText: 'your Email',
-                        obscureText: false,
-                        color: credentials.getEmailErrorColor(),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final height = constraints.maxHeight;
+          final width = constraints.maxWidth;
+          return GestureDetector(
+              onTap: () {
+                setState(() {
+                  backAni();
+                });
+              },
+              child: Stack(
+                alignment: Alignment.center,
+                overflow: Overflow.visible,
+                children: <Widget>[
+                  BackgroundPaper(
+                      height: height, width: width, animation: animation),
+                  // ImagePanel(
+                  //   imageLoction: 'images/animat-rocket-color.gif',
+                  // ),
+                  Positioned(
+                    top: 40,
+                    child: Hero(
+                      tag: 'animate',
+                      child: Container(
+                        child: MainImage(
+                            imageLocation: 'images/animat-rocket-color.gif'),
+                        width: 200,
+                        height: 200,
                       ),
                     ),
-                    //password
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(25, 25, 100, 0),
-                      child: Forum(
-                        credentials: credentials,
-                        hintText: 'password',
-                        obscureText: true,
-                        color: credentials.getPasswordErrorColor(),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      EmailErrorBox(error: error),
+                      //login
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(25, 0, 100, 0),
+                        child: Forum(
+                          credentials: credentials,
+                          hintText: 'your Email',
+                          obscureText: false,
+                          color: credentials.getEmailErrorColor(),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(25, 25, 100, 0),
-                      child: Forum(
-                        credentials: credentials,
-                        hintText: 'Confirm password',
-                        obscureText: true,
-                        id: 1,
-                        color: credentials.getMatchErrorColor(),
+                      //password
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(25, 25, 100, 0),
+                        child: Forum(
+                          credentials: credentials,
+                          hintText: 'password',
+                          obscureText: true,
+                          color: credentials.getPasswordErrorColor(),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                signInRow(credentials),
-                SignUpFootnotes(),
-              ],
-            ));
-      },
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(25, 25, 100, 0),
+                        child: Forum(
+                          credentials: credentials,
+                          hintText: 'Confirm password',
+                          obscureText: true,
+                          id: 1,
+                          color: credentials.getMatchErrorColor(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  signInRow(credentials),
+                  SignUpFootnotes(),
+                ],
+              ));
+        },
+      ),
     );
   }
 
@@ -209,17 +225,27 @@ class SignUpFootnotes extends StatelessWidget {
               child: Shimmer.fromColors(
                 baseColor: Colors.white60,
                 highlightColor: Colors.white,
-                child: Text('Sign In?',
-                    style: TextStyle(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Sign In?',
+                      style: TextStyle(
                         fontStyle: FontStyle.italic,
-                        fontFamily: 'NanumGothicCoding Regular')),
+                        fontFamily: 'NanumGothicCoding Regular',
+                        //fontSize: 15
+                      )),
+                ),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 250),
-            child: ImagePanelTwo(
-              imageLoction: 'images/animat-road-trip-color.gif',
+            child: Container(
+              child:
+                  MainImage(imageLocation: 'images/animat-road-trip-color.gif'),
+              width: 30,
+              height: 30,
             ),
           ),
         ],
