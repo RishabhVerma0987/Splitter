@@ -8,7 +8,7 @@ class CalculatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Page(),
-    )
+    );
   }
 }
 
@@ -24,9 +24,7 @@ class _PageState extends State<Page> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 80, 30, 0),
       child: Column(
-        children: <Widget>[
-          TextField()
-        ],
+        children: <Widget>[TextField()],
       ),
     );
   }
