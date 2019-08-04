@@ -116,7 +116,7 @@ class _SignOutState extends State<SignOut> with TickerProviderStateMixin {
                     ],
                   ),
                   signInRow(credentials),
-                  SignUpFootnotes(),
+                  SignUpFootnotes()
                 ],
               ));
         },

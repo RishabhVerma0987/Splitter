@@ -3,6 +3,8 @@ import 'screens/signIn.dart';
 import 'state/credentials.dart';
 import 'package:provider/provider.dart';
 import 'screens/signOut..dart';
+import 'screens/homepage.dart';
+import 'screens/calculate.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,12 +17,15 @@ class MyApp extends StatelessWidget {
         title: 'login page',
         debugShowCheckedModeBanner: false,
         darkTheme: ThemeData.dark(),
-        initialRoute: Home.home_Id,
+        //initialRoute: Home.home_Id,
+        initialRoute: Homepage.homePageId,
         routes: {
           SignIn.screenId: (context) => SignIn(),
           SignOut.screenId: (context) => SignOut(),
+          CalculatePage.calculatePageId: (context) => CalculatePage(),
         },
-        home: Home(),
+        //home: Home(),
+        home: Homepage(),
       ),
     );
   }
