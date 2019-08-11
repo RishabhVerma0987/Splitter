@@ -1,7 +1,9 @@
 import 'dart:ui';
+import 'dart:ui' as prefix0;
 import 'package:flutter/material.dart';
 import '../components/homepage/swipingcard.dart';
 import '../components/homepage/circularAvatar.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class Homepage extends StatefulWidget {
   static String homePageId = 'Home_Page_screen';
@@ -28,61 +30,62 @@ class _HomepageState extends State<Homepage> {
                   child: Container(
                     color: Color(0xFF7C87D5),
                     width: width,
-                    height: height / 2.6,
+                    height: height / 2.9,
                   ),
                 ),
                 Positioned(
-                  left: 10,
-                  top: 20,
-                  child: Icon(
-                    Icons.list,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                ),
-                Positioned(
-                    left: width / 2 - 60,
-                    top: 185,
+                    left: width / 2 - 50,
+                    top: 165,
                     child: CircluarAvatar(
-                      radius: 60,
+                      radius: 50,
+                      image: NetworkImage(
+                          'https://cdn.pixabay.com/photo/2014/07/09/10/04/man-388104_960_720.jpg'),
                     )),
                 Positioned(
-                  top: 70,
-                  left: width / 2 - 34,
+                  top: 60,
+                  left: width / 2 - 45,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         'Total',
-                        style: TextStyle(color: Colors.white, fontSize: 40),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 50,
+                            fontWeight: FontWeight.w300),
                       ),
                       Text(
-                        '23.4',
+                        '123.4',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
-                            fontStyle: FontStyle.italic),
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w300),
                       )
                     ],
                   ),
                 ),
-                CircleForDash(
-                  top: 120,
-                  left: 40,
-                  right: null,
-                  text: '50.0',
-                  color: Color(0xFFeb7373),
+                CircleWithIndicator(
+                  text: '70.0',
+                  backgroundColor: Colors.redAccent,
+                  progressColor: Colors.greenAccent,
+                  textColor: Colors.white,
+                  totalOweAmount: '100',
+                  currency: 'dollar',
                 ),
-                CircleForDash(
-                  top: 120,
-                  left: null,
-                  right: 40,
-                  text: '50.0',
-                  color: Color(0xFF73ebc5),
-                ),
+                Padding(
+                    padding: EdgeInsets.only(left: 240),
+                    child: CircleWithIndicator(
+                      text: '50.0',
+                      backgroundColor: Colors.greenAccent,
+                      progressColor: Colors.redAccent,
+                      textColor: Colors.black,
+                      totalOweAmount: '300',
+                      currency: 'ruppe',
+                    )),
                 Positioned(
-                  left: width / 2 - 60,
-                  top: 310,
+                  left: width / 2 - 65,
+                  top: 270,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -118,14 +121,16 @@ class _HomepageState extends State<Homepage> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 90, right: 190),
+              padding: const EdgeInsets.only(top: 75, right: 210),
               child: OwesOrOwedText(
                 text: 'You Owe',
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, top: 10),
-              child: SwipingCard(),
+              child: SwipingCard(
+                isOwe: true,
+              ),
             ),
             Padding(
                 padding: const EdgeInsets.only(top: 20, left: 200),
@@ -134,12 +139,65 @@ class _HomepageState extends State<Homepage> {
                 )),
             Padding(
               padding: const EdgeInsets.only(left: 20, top: 10),
-              child: SwipingCard(),
+              child: SwipingCard(
+                isOwe: false,
+              ),
             ),
           ],
         ),
       );
     });
+  }
+}
+
+class CircleWithIndicator extends StatelessWidget {
+  final String text;
+  final Color backgroundColor;
+  final Color progressColor;
+  final Color textColor;
+  final String totalOweAmount;
+  final String currency;
+  CircleWithIndicator(
+      {this.text,
+      this.backgroundColor,
+      this.progressColor,
+      this.textColor,
+      this.totalOweAmount,
+      this.currency});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      overflow: Overflow.visible,
+      children: <Widget>[
+        CircleForDash(
+          top: 100,
+          left: 40,
+          right: null,
+          text: text,
+          color: backgroundColor,
+          textColor: textColor,
+          totalOweAmount: totalOweAmount,
+          currency: currency,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 90, left: 34),
+          child: CircularPercentIndicator(
+            radius: 110.0,
+            lineWidth: 7.0,
+            animation: true,
+            percent: 0.7,
+            reverse: true,
+            backgroundColor: backgroundColor,
+            center: new Text(
+              "",
+            ),
+            circularStrokeCap: CircularStrokeCap.round,
+            progressColor: progressColor,
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -165,6 +223,9 @@ class CircleForDash extends StatelessWidget {
   final String text;
   final double right;
   final Color color;
+  final Color textColor;
+  final String totalOweAmount;
+  final String currency;
 
   CircleForDash({
     this.left,
@@ -172,6 +233,9 @@ class CircleForDash extends StatelessWidget {
     this.right,
     this.text,
     this.color,
+    this.textColor,
+    this.totalOweAmount,
+    this.currency,
   });
 
   @override
@@ -186,7 +250,31 @@ class CircleForDash extends StatelessWidget {
           child: Material(
             shape: CircleBorder(),
             color: color,
-            child: Center(child: Text(text)),
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 25,
+                    fontWeight: prefix0.FontWeight.normal,
+                  ),
+                ),
+                Text(
+                  'left out of $totalOweAmount' +
+                      '\n' +
+                      '\t\t\t\t' +
+                      '$currency',
+                  style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.italic,
+                      color: textColor),
+                )
+              ],
+            )),
           ),
         ));
   }

@@ -3,7 +3,14 @@ import 'circularAvatar.dart';
 
 class CardContainer extends StatelessWidget {
   final List<Color> colorForGradient;
-  CardContainer({this.colorForGradient});
+  final String name;
+  final double amount;
+  final ImageProvider image;
+  CardContainer(
+      {@required this.colorForGradient,
+      @required this.name,
+      @required this.amount,
+      @required this.image});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,6 +30,7 @@ class CardContainer extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 20),
                 child: CircluarAvatar(
                   radius: 35,
+                  image: image,
                 ),
               ),
               Padding(
@@ -30,7 +38,7 @@ class CardContainer extends StatelessWidget {
                 child: RectangleBox(
                   height: 25,
                   width: 70,
-                  text: 'Name',
+                  text: name,
                   fontSize: 15,
                 ),
               ),
@@ -42,11 +50,11 @@ class CardContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                    padding: const EdgeInsets.only(left: 15, top: 20),
+                    padding: const EdgeInsets.only(left: 15, top: 30),
                     child: RectangleBox(
                       height: 60,
                       width: 100,
-                      text: '25.5',
+                      text: amount.toString(),
                       fontSize: 30,
                       fontWeight: FontWeight.w300,
                     )),
@@ -54,7 +62,7 @@ class CardContainer extends StatelessWidget {
             ),
           ),
           Padding(
-              padding: const EdgeInsets.only(left: 25),
+              padding: const EdgeInsets.only(left: 35),
               child: RectangleBox(
                 text: 'Pay',
                 height: 50,

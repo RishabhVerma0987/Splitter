@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class CircluarAvatar extends StatelessWidget {
   final double radius;
-  const CircluarAvatar({this.radius});
+  final ImageProvider image;
+  const CircluarAvatar({ @required this.radius,@required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +13,7 @@ class CircluarAvatar extends StatelessWidget {
       child: CircleAvatar(
         radius: radius,
         backgroundColor: Colors.cyan,
-        backgroundImage: NetworkImage(
-            'https://qodebrisbane.com/wp-content/uploads/2019/02/This-is-not-a-person-10-1.jpeg'),
+        backgroundImage: image,
       ),
     );
   }
