@@ -4,7 +4,8 @@ import 'state/credentials.dart';
 import 'package:provider/provider.dart';
 import 'screens/signOut..dart';
 import 'screens/homepage.dart';
-import 'screens/calculate.dart';
+//import 'screens/calculate.dart';
+import 'screens/clone.dart';
 
 void main() => runApp(MyApp());
 

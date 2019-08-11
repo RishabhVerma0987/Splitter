@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   fluttie: ^0.3.0
   avatar_glow:
+  flutter_swiper :
   shimmer: ^1.0.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -46,6 +47,11 @@ flutter:
     - images/animat-road-trip-color.gif
     - images/new.png
     - images/animat-rocket-color.gif
+    - images/person.jpeg
+    - images/image1.jpg
+    - images/image2.jpg
+    - images/image3.jpg
+    - images/image4.png
   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
