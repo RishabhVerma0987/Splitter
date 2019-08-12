@@ -4,6 +4,7 @@ import 'state/credentials.dart';
 import 'package:provider/provider.dart';
 import 'screens/signOut..dart';
 import 'screens/homepage.dart';
+import 'screens/splitMoney.dart';
 //import 'screens/calculate.dart';
 import 'screens/clone.dart';
 
@@ -19,14 +20,15 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         darkTheme: ThemeData.dark(),
         //initialRoute: Home.home_Id,
-        initialRoute: Homepage.homePageId,
+        initialRoute: SplitMoney.splitMoneyId,
         routes: {
           SignIn.screenId: (context) => SignIn(),
           SignOut.screenId: (context) => SignOut(),
           CalculatePage.calculatePageId: (context) => CalculatePage(),
+          Homepage.homePageId: (context) => Homepage()
         },
         //home: Home(),
-        home: Homepage(),
+        home: SplitMoney(),
       ),
     );
   }

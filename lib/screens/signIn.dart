@@ -8,6 +8,7 @@ import '../components/signInSignOutPieces.dart/forum.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import '../components/signInSignOutPieces.dart/displayImage.dart';
+import 'homepage.dart';
 
 class SignIn extends StatefulWidget {
   static String screenId = 'SignIn_screen';
@@ -148,6 +149,12 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
                     setState(() {
                       finalCheck(credentials);
                     });
+                    if (error == false) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => Homepage()));
+                    }
                   },
                   fillColor: cirlcleButtonColor,
                   child: Icon(

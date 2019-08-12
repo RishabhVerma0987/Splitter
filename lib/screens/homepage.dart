@@ -118,6 +118,14 @@ class _HomepageState extends State<Homepage> {
                     ],
                   ),
                 ),
+                Positioned(
+                  right: 80,
+                  bottom: -70,
+                  child: FloatingActionButton(
+                    onPressed: () {},
+                    child: Icon(Icons.add),
+                  ),
+                )
               ],
             ),
             Padding(
