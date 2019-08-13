@@ -1,5 +1,6 @@
 import 'package:custom_clipper/components/homepage/circularAvatar.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SplitMoney extends StatefulWidget {
   static String splitMoneyId = 'splitMoney_screen';
@@ -15,6 +16,7 @@ class _SplitMoneyState extends State<SplitMoney> {
   var items = List<String>();
   @override
   void initState() {
+    askForContactAcessPermission();
     items.addAll(duplicateItems);
     super.initState();
   }
@@ -198,6 +200,21 @@ class _SplitMoneyState extends State<SplitMoney> {
             )),
       ),
     );
+  }
+
+  void askForContactAcessPermission() async {
+    //TODO: has to handle all the cases , for eg - what if the permission to unKnown
+    Map<PermissionGroup, PermissionStatus> permissions =
+        await PermissionHandler()
+            .requestPermissions([PermissionGroup.contacts]);
+    PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.contacts);
+    if (permission.value == 2) {
+      //means permission is granted
+      print('permission given');
+    } else {
+      print('denied');
+    }
   }
 
   void disableSearchResult() {
