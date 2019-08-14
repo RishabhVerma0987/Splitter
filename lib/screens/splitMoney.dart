@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:custom_clipper/components/homepage/circularAvatar.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:contacts_service/contacts_service.dart';
 
 class SplitMoney extends StatefulWidget {
   static String splitMoneyId = 'splitMoney_screen';
@@ -11,20 +14,20 @@ class SplitMoney extends StatefulWidget {
 
 class _SplitMoneyState extends State<SplitMoney> {
   TextEditingController editingController = TextEditingController();
-  final duplicateItems = List<String>.generate(20, (i) => "Item $i");
+
+  List<Data> duplicateItems = List<Data>();
   bool showSearchResults = false;
-  var items = List<String>();
+
+  List<Data> items = List<Data>();
   @override
   void initState() {
     askForContactAcessPermission();
-    items.addAll(duplicateItems);
+    getAllContact();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(showSearchResults);
-
     return SafeArea(
       child: GestureDetector(
         onTap: () {
@@ -39,17 +42,30 @@ class _SplitMoneyState extends State<SplitMoney> {
             body: Column(
               children: <Widget>[
                 Container(
-                  height: 110,
+                  height: 90,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 25),
                     child: Row(
-                        children: <Widget>[ContactAvatar(), ContactAvatar()]),
+                      children: <Widget>[
+                        Container(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: 4,
+                            itemBuilder: (BuildContext context, int index) {
+                              return CircleAvatar();
+                            },
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Stack(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(top: 10, left: 40),
+                      padding:
+                          const EdgeInsets.only(top: 10, left: 40, right: 40),
                       child: Text(
                         'With you and ,',
                         style: TextStyle(
@@ -57,7 +73,8 @@ class _SplitMoneyState extends State<SplitMoney> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 40, left: 40),
+                      padding:
+                          const EdgeInsets.only(top: 40, left: 40, right: 40),
                       child: Material(
                         elevation: 10,
                         borderRadius: BorderRadius.circular(9),
@@ -109,11 +126,11 @@ class _SplitMoneyState extends State<SplitMoney> {
                     ),
                     showSearchResults
                         ? Padding(
-                            padding: const EdgeInsets.only(top: 160, left: 30),
+                            padding: const EdgeInsets.only(top: 100, left: 30),
                             child: Material(
                               elevation: 4,
                               child: Container(
-                                height: 300,
+                                height: 250,
                                 width: 350,
                                 child: ListView.separated(
                                   shrinkWrap: true,
@@ -125,15 +142,34 @@ class _SplitMoneyState extends State<SplitMoney> {
                                       child: Card(
                                         elevation: 5,
                                         child: Container(
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(7),
-                                              color: Colors.white),
-                                          child: Center(
-                                            child: Text('${items[index]}'),
-                                          ),
-                                        ),
+                                            height: 60,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                color: Colors.white),
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 10, left: 20),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(
+                                                    '${items[index].displayName}',
+                                                    style: TextStyle(
+                                                        fontSize: 25,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  //FIXME: add phone numbers below names
+                                                  // Text('${items[index].phone}',
+                                                  //     style: TextStyle(
+                                                  //         fontSize: 12,
+                                                  //         fontWeight:
+                                                  //             FontWeight.w200))
+                                                ],
+                                              ),
+                                            )),
                                       ),
                                     );
                                   },
@@ -217,6 +253,24 @@ class _SplitMoneyState extends State<SplitMoney> {
     }
   }
 
+  getAllContact() async {
+    List<Data> dataList = List<Data>();
+
+    Iterable<Contact> contacts =
+        await ContactsService.getContacts(withThumbnails: false);
+
+    for (var i in contacts) {
+      dataList.add(Data(displayName: i.displayName, phone: i.phones.toList()));
+    }
+    print(dataList[2].displayName);
+    setState(() {
+      duplicateItems.addAll(dataList);
+    });
+    setState(() {
+      items.addAll(duplicateItems);
+    });
+  }
+
   void disableSearchResult() {
     if (editingController.text.isEmpty) {
       setState(() {
@@ -229,14 +283,13 @@ class _SplitMoneyState extends State<SplitMoney> {
     }
   }
 
-  //filter results
   void filterSearchResults(String query) {
-    List<String> dummySearchList = List<String>();
+    List<Data> dummySearchList = [];
     dummySearchList.addAll(duplicateItems);
     if (query.isNotEmpty) {
-      List<String> dummyListData = List<String>();
+      List<Data> dummyListData = [];
       dummySearchList.forEach((item) {
-        if (item.contains(query)) {
+        if (item.displayName.contains(query)) {
           dummyListData.add(item);
         }
       });
@@ -258,9 +311,8 @@ class _SplitMoneyState extends State<SplitMoney> {
 }
 
 class ContactAvatar extends StatelessWidget {
-  const ContactAvatar({
-    Key key,
-  }) : super(key: key);
+  final String displayName;
+  ContactAvatar({this.displayName});
 
   @override
   Widget build(BuildContext context) {
@@ -284,7 +336,7 @@ class ContactAvatar extends StatelessWidget {
                 elevation: 5,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100)),
-                child: Center(child: Text('Mike')),
+                child: Center(child: Text(displayName)),
               ),
             ),
           ),
@@ -299,4 +351,10 @@ class ContactAvatar extends StatelessWidget {
       ),
     );
   }
+}
+
+class Data {
+  String displayName;
+  List phone;
+  Data({this.displayName, this.phone});
 }
